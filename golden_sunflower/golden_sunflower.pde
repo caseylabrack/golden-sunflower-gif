@@ -1,14 +1,10 @@
-float totalFrames = 250;
+float totalFrames = 400;
 
-float radius = 1;
-float radiusTotal = 300;
+float radiusTotal = 150;
 float radiusStep = 1;
 
-float goldenRatio = 1.61803398875;
-float angleStepEnd = 1.625;
-
-float angle = 0;
-float angleStep;
+float start = .5;
+float goldenRatio = .61803398875;
 
 void setup () {
   size(400, 400);
@@ -19,20 +15,21 @@ void setup () {
 void draw () {
   background(0, 0, 100);
 
+  float angleStep;
   if (frameCount <= totalFrames/2) {
-    angleStep = easings.easeInOutQuart(frameCount, angleStepEnd, goldenRatio - angleStepEnd, totalFrames/2);
+    angleStep = easings.easeInOutQuart(frameCount, start, goldenRatio - start, totalFrames/2);
   } else {
-    angleStep = easings.easeInOutQuart(frameCount-totalFrames/2, goldenRatio, angleStepEnd - goldenRatio, totalFrames/2);
+    angleStep = easings.easeInOutQuart(frameCount-totalFrames/2, goldenRatio, start - goldenRatio, totalFrames/2);
   }
   
+  float radius = 1;
+  float angle = 0;
   while (radius < radiusTotal) {
-    fill(int(1.625 * radius % 8 % 1.0 / .125) * 360/8, 50, 90); // going around the color wheel in 13/8 steps
-    ellipse(width/2 + cos(angle * TWO_PI) * radius, height/2 + sin(angle * TWO_PI) * radius, 8, 8);
+    fill(radius % 2 == 0 ? 0 : 0 + 180, 100, 70);
+    ellipse(width/2 + cos(angle * TWO_PI) * radius, height/2 + sin(angle * TWO_PI) * radius, 10, 10);
     angle += angleStep;
     radius += radiusStep;
   }
-  angle = 0;
-  radius = 1;
 
   saveFrame("output/sunflower-######.png");
   if (frameCount==totalFrames) exit();
